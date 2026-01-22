@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radar Beam Width Calculator</title>
+    <style>
+        /* Banner Brand Colors */
+        :root {
+            --banner-yellow: #FFD600;
+            --banner-black: #000000;
+            --banner-dark-gray: #4A4A4A;
+            --banner-medium-gray: #818091;
+            --banner-light-gray: #D4D7E0;
+            --banner-off-white: #F2F2F2;
+            --banner-white: #FFFFFF;
+            --error-red: #D32F2F;
+        }
+
+        /* Typography - Proxima Nova with fallbacks */
+        body {
+            font-family: 'Proxima Nova', Calibri, Arial, sans-serif;
+            font-weight: 300; /* Light */
+            padding: 20px;
+            max-width: 450px;
+            margin: auto;
+            color: var(--banner-black);
+            background-color: var(--banner-white);
+            line-height: 1.5;
+        }
+
+        h2 {
+            font-family: 'Proxima Nova', Calibri, Arial, sans-serif;
+            font-weight: 700; /* Bold */
+            color: var(--banner-black);
+            margin-bottom: 24px;
+            border-bottom: 3px solid var(--banner-yellow);
+            padding-bottom: 8px;
+        }
+
+        /* Form structure */
+        form {
+            margin: 0;
+            padding: 0;
+        }
+
+        fieldset {
+            border: none;
+            padding: 0;
+            margin: 0 0 16px 0;
+        }
+
+        legend {
+            font-weight: 600;
+            color: var(--banner-dark-gray);
+            margin-bottom: 8px;
+            padding: 0;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: 400;
+            color: var(--banner-dark-gray);
+        }
+
+        select, input[type="number"] {
+            display: block;
+            margin-top: 4px;
+            padding: 10px 12px;
+            border: 1px solid var(--banner-light-gray);
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 16px;
+            width: 100%;
+            box-sizing: border-box;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        select:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: var(--banner-yellow);
+            box-shadow: 0 0 0 3px rgba(255, 214, 0, 0.3);
+        }
+
+        /* Make placeholder text clearly different from actual values */
+        input::placeholder {
+            color: var(--banner-light-gray);
+            font-style: italic;
+            opacity: 1;
+        }
+
+        input[type="number"]:invalid,
+        input.error {
+            border-color: var(--error-red);
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: var(--banner-medium-gray);
+            margin-top: 2px;
+        }
+
+        /* Output section */
+        .output {
+            margin-top: 24px;
+            padding: 16px;
+            background-color: var(--banner-off-white);
+            border-radius: 8px;
+            border-left: 4px solid var(--banner-yellow);
+        }
+
+        .output p {
+            margin: 8px 0;
+            font-weight: 400;
+        }
+
+        .output-label {
+            color: var(--banner-dark-gray);
+        }
+
+        .output-value {
+            font-weight: 700;
+            color: var(--banner-black);
+            font-size: 1.1em;
+        }
+
+        .output-value.error {
+            color: var(--error-red);
+            font-weight: 400;
+            font-size: 0.95em;
+        }
+
+        .output-placeholder {
+            color: var(--banner-medium-gray);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        /* Toggle switch - improved for accessibility and brand */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+            padding: 12px 0;
+        }
+
+        .toggle-label {
+            font-weight: 400;
+            color: var(--banner-dark-gray);
+            min-width: 60px;
+        }
+
+        .toggle-label.active {
+            font-weight: 600;
+            color: var(--banner-black);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 56px;
+            height: 30px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-switch input:focus + .slider {
+            box-shadow: 0 0 0 3px rgba(255, 214, 0, 0.4);
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--banner-medium-gray);
+            border-radius: 30px;
+            transition: background-color 0.3s, box-shadow 0.2s;
+        }
+
+        .slider:before {
+            content: "";
+            position: absolute;
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: var(--banner-white);
+            border-radius: 50%;
+            transition: transform 0.3s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        input:checked + .slider {
+            background-color: var(--banner-yellow);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Distance inputs container */
+        .distance-inputs {
+            display: flex;
+            gap: 12px;
+        }
+
+        .distance-inputs > div {
+            flex: 1;
+        }
+
+        /* Error message styling */
+        .error-message {
+            color: var(--error-red);
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            body {
+                padding: 16px;
+            }
+
+            .toggle-switch {
+                width: 50px;
+                height: 28px;
+            }
+
+            .slider:before {
+                height: 20px;
+                width: 20px;
+            }
+
+            input:checked + .slider:before {
+                transform: translateX(22px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>Radar Beam Width Calculator</h2>
+
+    <form id="calculatorForm" aria-label="Radar beam width calculator">
+        <!-- Unit Toggle -->
+        <fieldset>
+            <legend class="visually-hidden">Unit System</legend>
+            <div class="toggle-container" role="group" aria-label="Select unit system">
+                <span id="imperialLabel" class="toggle-label active">Imperial</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="unitToggle" aria-describedby="unitToggleDesc">
+                    <span class="slider" role="presentation"></span>
+                </label>
+                <span id="metricLabel" class="toggle-label">Metric</span>
+                <span id="unitToggleDesc" class="visually-hidden">Toggle between Imperial and Metric units</span>
+            </div>
+        </fieldset>
+
+        <!-- Distance Inputs -->
+        <fieldset>
+            <legend>Distance</legend>
+
+            <div id="imperialInputs">
+                <div class="distance-inputs">
+                    <div>
+                        <label for="feet">Feet</label>
+                        <input type="number" id="feet" min="0" step="1" aria-describedby="feetHint" placeholder="e.g. 10">
+                        <span id="feetHint" class="input-hint">Whole feet</span>
+                    </div>
+                    <div>
+                        <label for="inches">Inches</label>
+                        <input type="number" id="inches" min="0" max="11" step="1" aria-describedby="inchesHint" placeholder="e.g. 6">
+                        <span id="inchesHint" class="input-hint">0-11 inches</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="metricInputs" style="display: none;">
+                <label for="meters">Meters</label>
+                <input type="number" id="meters" step="0.01" min="0" aria-describedby="metersHint" placeholder="e.g. 3.05">
+                <span id="metersHint" class="input-hint">Distance in meters</span>
+            </div>
+        </fieldset>
+
+        <!-- Beam Angle Inputs -->
+        <fieldset>
+            <legend>Beam Angles</legend>
+
+            <label for="presetAngles">Preset Configurations</label>
+            <select id="presetAngles" aria-describedby="presetHint">
+                <option value="">Custom</option>
+                <option value="15,15">15° x 15°</option>
+                <option value="40,30">40° x 30°</option>
+                <option value="40,40">40° x 40°</option>
+                <option value="40,120">40° x 120°</option>
+            </select>
+            <span id="presetHint" class="input-hint">Select a preset or enter custom angles below</span>
+
+            <label for="beamAngleV">Vertical Beam Angle (degrees)</label>
+            <input type="number" id="beamAngleV" min="1" max="180" step="1" aria-describedby="angleVHint" placeholder="e.g. 15">
+            <span id="angleVHint" class="input-hint">1° to 180°</span>
+
+            <label for="beamAngleH">Horizontal Beam Angle (degrees)</label>
+            <input type="number" id="beamAngleH" min="1" max="180" step="1" aria-describedby="angleHHint" placeholder="e.g. 15">
+            <span id="angleHHint" class="input-hint">1° to 180°</span>
+        </fieldset>
+    </form>
+
+    <!-- Output Section -->
+    <div class="output" role="region" aria-live="polite" aria-label="Calculation results">
+        <p>
+            <span class="output-label">Horizontal Beam Width:</span><br>
+            <span id="outputH" class="output-value output-placeholder">Enter values to calculate</span>
+        </p>
+        <p>
+            <span class="output-label">Vertical Beam Width:</span><br>
+            <span id="outputV" class="output-value output-placeholder">Enter values to calculate</span>
+        </p>
+        <p id="errorMessage" class="error-message" role="alert"></p>
+    </div>
+
+    <script>
+        // DOM Elements
+        const unitToggle = document.getElementById("unitToggle");
+        const feetInput = document.getElementById("feet");
+        const inchesInput = document.getElementById("inches");
+        const metersInput = document.getElementById("meters");
+        const beamAngleVInput = document.getElementById("beamAngleV");
+        const beamAngleHInput = document.getElementById("beamAngleH");
+        const presetAngles = document.getElementById("presetAngles");
+        const outputH = document.getElementById("outputH");
+        const outputV = document.getElementById("outputV");
+        const errorMessage = document.getElementById("errorMessage");
+        const imperialLabel = document.getElementById("imperialLabel");
+        const metricLabel = document.getElementById("metricLabel");
+
+        let debounceTimer;
+
+        // Conversion functions with bug fix for rounding
+        function convertToMeters(feet, inches) {
+            return ((feet * 12 + inches) * 0.0254).toFixed(4);
+        }
+
+        function convertToFeetInches(meters) {
+            let totalInches = meters / 0.0254;
+            let feet = Math.floor(totalInches / 12);
+            let inches = Math.round(totalInches % 12);
+
+            // Fix: Handle case where inches rounds to 12
+            if (inches >= 12) {
+                feet += 1;
+                inches = 0;
+            }
+
+            return { feet, inches };
+        }
+
+        // Show/hide error message
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.add('visible');
+            outputH.textContent = "--";
+            outputV.textContent = "--";
+            outputH.classList.add('error');
+            outputV.classList.add('error');
+            outputH.classList.remove('output-placeholder');
+            outputV.classList.remove('output-placeholder');
+        }
+
+        function clearError() {
+            errorMessage.textContent = "";
+            errorMessage.classList.remove('visible');
+            outputH.classList.remove('error');
+            outputV.classList.remove('error');
+        }
+
+        // Main calculation function with improved validation
+        function calculateBeamWidth() {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(() => {
+                let distance;
+
+                // Parse distance based on unit system
+                if (!unitToggle.checked) {
+                    // Imperial
+                    let feet = parseFloat(feetInput.value) || 0;
+                    let inches = parseFloat(inchesInput.value) || 0;
+                    distance = (feet * 12 + inches) * 0.0254;
+                } else {
+                    // Metric
+                    distance = parseFloat(metersInput.value) || 0;
+                }
+
+                // Parse angles with NaN validation
+                let angleV = parseFloat(beamAngleVInput.value);
+                let angleH = parseFloat(beamAngleHInput.value);
+
+                // Clear error state first
+                clearError();
+
+                // Check if inputs are empty or show placeholder
+                const hasDistance = unitToggle.checked
+                    ? (metersInput.value !== "" && parseFloat(metersInput.value) > 0)
+                    : ((feetInput.value !== "" && parseFloat(feetInput.value) > 0) ||
+                       (inchesInput.value !== "" && parseFloat(inchesInput.value) > 0));
+                const hasAngles = beamAngleVInput.value !== "" && beamAngleHInput.value !== "";
+
+                if (!hasDistance && !hasAngles) {
+                    outputH.textContent = "Enter values to calculate";
+                    outputV.textContent = "Enter values to calculate";
+                    outputH.classList.add('output-placeholder');
+                    outputV.classList.add('output-placeholder');
+                    return;
+                }
+
+                outputH.classList.remove('output-placeholder');
+                outputV.classList.remove('output-placeholder');
+
+                // Validate distance
+                if (distance <= 0) {
+                    showError("Please enter a distance greater than 0");
+                    return;
+                }
+
+                // Validate angles - check for NaN
+                if (isNaN(angleV) || isNaN(angleH)) {
+                    showError("Please enter both vertical and horizontal beam angles");
+                    return;
+                }
+
+                // Validate angle range
+                if (angleV < 1 || angleV > 180 || angleH < 1 || angleH > 180) {
+                    showError("Beam angles must be between 1° and 180°");
+                    return;
+                }
+
+                // Calculate beam widths
+                let widthH = 2 * distance * Math.tan((angleH / 2) * (Math.PI / 180));
+                let widthV = 2 * distance * Math.tan((angleV / 2) * (Math.PI / 180));
+
+                // Check for invalid calculation results
+                if (!isFinite(widthH) || !isFinite(widthV)) {
+                    showError("Calculation error: Please check your input values");
+                    return;
+                }
+
+                // Format and display results
+                if (!unitToggle.checked) {
+                    // Imperial output
+                    widthH = widthH / 0.0254;
+                    widthV = widthV / 0.0254;
+                    outputH.textContent = `${(widthH / 12).toFixed(2)} ft (${widthH.toFixed(1)} in)`;
+                    outputV.textContent = `${(widthV / 12).toFixed(2)} ft (${widthV.toFixed(1)} in)`;
+                } else {
+                    // Metric output
+                    outputH.textContent = `${widthH.toFixed(3)} m`;
+                    outputV.textContent = `${widthV.toFixed(3)} m`;
+                }
+            }, 300);
+        }
+
+        // Update toggle label styling
+        function updateToggleLabels() {
+            if (unitToggle.checked) {
+                imperialLabel.classList.remove('active');
+                metricLabel.classList.add('active');
+            } else {
+                imperialLabel.classList.add('active');
+                metricLabel.classList.remove('active');
+            }
+        }
+
+        // Unit toggle handler with conversion
+        unitToggle.addEventListener("change", () => {
+            if (unitToggle.checked) {
+                // Imperial → Metric
+                let feet = parseFloat(feetInput.value) || 0;
+                let inches = parseFloat(inchesInput.value) || 0;
+                metersInput.value = convertToMeters(feet, inches);
+            } else {
+                // Metric → Imperial
+                let meters = parseFloat(metersInput.value) || 0;
+                let { feet, inches } = convertToFeetInches(meters);
+                feetInput.value = feet;
+                inchesInput.value = inches;
+            }
+
+            document.getElementById("imperialInputs").style.display = unitToggle.checked ? "none" : "block";
+            document.getElementById("metricInputs").style.display = unitToggle.checked ? "block" : "none";
+
+            updateToggleLabels();
+            calculateBeamWidth();
+        });
+
+        // Preset angles handler
+        presetAngles.addEventListener("change", () => {
+            if (presetAngles.value) {
+                let [v, h] = presetAngles.value.split(",");
+                beamAngleVInput.value = v;
+                beamAngleHInput.value = h;
+            }
+            calculateBeamWidth();
+        });
+
+        // Reset preset to "Custom" when angles are manually changed
+        function resetPresetToCustom() {
+            presetAngles.value = "";
+        }
+
+        // Input event listeners
+        feetInput.addEventListener("input", calculateBeamWidth);
+        inchesInput.addEventListener("input", calculateBeamWidth);
+        metersInput.addEventListener("input", calculateBeamWidth);
+        beamAngleVInput.addEventListener("input", () => {
+            resetPresetToCustom();
+            calculateBeamWidth();
+        });
+        beamAngleHInput.addEventListener("input", () => {
+            resetPresetToCustom();
+            calculateBeamWidth();
+        });
+
+        // Initialize toggle labels
+        updateToggleLabels();
+    </script>
+</body>
+</html>
