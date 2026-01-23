@@ -309,13 +309,11 @@
             </select>
             <span id="presetHint" class="input-hint">Select a preset or enter custom angles below</span>
 
-            <label for="beamAngleV">Vertical Beam Angle (degrees)</label>
-            <input type="number" id="beamAngleV" min="1" max="180" step="1" aria-describedby="angleVHint" placeholder="e.g. 15">
-            <span id="angleVHint" class="input-hint">1° to 180°</span>
-
             <label for="beamAngleH">Horizontal Beam Angle (degrees)</label>
-            <input type="number" id="beamAngleH" min="1" max="180" step="1" aria-describedby="angleHHint" placeholder="e.g. 15">
-            <span id="angleHHint" class="input-hint">1° to 180°</span>
+            <input type="number" id="beamAngleH" min="1" max="180" step="1" placeholder="e.g. 15">
+
+            <label for="beamAngleV">Vertical Beam Angle (degrees)</label>
+            <input type="number" id="beamAngleV" min="1" max="180" step="1" placeholder="e.g. 15">
         </fieldset>
     </form>
 
@@ -508,9 +506,9 @@
         // Preset angles handler
         presetAngles.addEventListener("change", () => {
             if (presetAngles.value) {
-                let [v, h] = presetAngles.value.split(",");
-                beamAngleVInput.value = v;
+                let [h, v] = presetAngles.value.split(",");
                 beamAngleHInput.value = h;
+                beamAngleVInput.value = v;
             }
             calculateBeamWidth();
         });
