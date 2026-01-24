@@ -229,6 +229,33 @@
             display: block;
         }
 
+        /* Custom angle inputs - collapsible and de-emphasized */
+        .custom-angles {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out, margin 0.3s ease-out;
+            margin-top: 0;
+        }
+
+        .custom-angles.visible {
+            max-height: 200px;
+            opacity: 1;
+            margin-top: 12px;
+        }
+
+        .custom-angles label {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--banner-medium-gray);
+            margin-top: 8px;
+        }
+
+        .custom-angles input[type="number"] {
+            font-size: 14px;
+            padding: 8px 10px;
+        }
+
         /* Responsive adjustments */
         @media (max-width: 480px) {
             body {
@@ -302,18 +329,20 @@
             <label for="presetAngles">Preset Configurations</label>
             <select id="presetAngles" aria-describedby="presetHint">
                 <option value="">Custom</option>
-                <option value="15,15">15° x 15°</option>
+                <option value="15,15" selected>15° x 15°</option>
                 <option value="40,30">40° x 30°</option>
                 <option value="40,40">40° x 40°</option>
                 <option value="40,120">40° x 120°</option>
             </select>
-            <span id="presetHint" class="input-hint">Select a preset or enter custom angles below</span>
+            <span id="presetHint" class="input-hint">Select a preset or choose custom</span>
 
-            <label for="beamAngleV">Vertical Beam Angle (degrees)</label>
-            <input type="number" id="beamAngleV" min="1" max="180" step="1" placeholder="e.g. 15">
+            <div id="customAngles" class="custom-angles">
+                <label for="beamAngleV">Vertical Beam Angle (degrees)</label>
+                <input type="number" id="beamAngleV" min="1" max="180" step="1" placeholder="e.g. 15">
 
-            <label for="beamAngleH">Horizontal Beam Angle (degrees)</label>
-            <input type="number" id="beamAngleH" min="1" max="180" step="1" placeholder="e.g. 15">
+                <label for="beamAngleH">Horizontal Beam Angle (degrees)</label>
+                <input type="number" id="beamAngleH" min="1" max="180" step="1" placeholder="e.g. 15">
+            </div>
         </fieldset>
     </form>
 
@@ -505,17 +534,26 @@
 
         // Preset angles handler
         presetAngles.addEventListener("change", () => {
+            const customAnglesDiv = document.getElementById("customAngles");
+
             if (presetAngles.value) {
+                // Preset selected - hide custom inputs and populate values
+                customAnglesDiv.classList.remove("visible");
                 let [v, h] = presetAngles.value.split(",");
                 beamAngleVInput.value = v;
                 beamAngleHInput.value = h;
+            } else {
+                // Custom selected - show custom inputs
+                customAnglesDiv.classList.add("visible");
             }
             calculateBeamWidth();
         });
 
         // Reset preset to "Custom" when angles are manually changed
         function resetPresetToCustom() {
+            const customAnglesDiv = document.getElementById("customAngles");
             presetAngles.value = "";
+            customAnglesDiv.classList.add("visible");
         }
 
         // Input event listeners
@@ -533,6 +571,13 @@
 
         // Initialize toggle labels
         updateToggleLabels();
+
+        // Initialize with default preset values
+        if (presetAngles.value) {
+            let [v, h] = presetAngles.value.split(",");
+            beamAngleVInput.value = v;
+            beamAngleHInput.value = h;
+        }
     </script>
 </body>
 </html>
