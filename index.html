@@ -309,23 +309,23 @@
             </select>
             <span id="presetHint" class="input-hint">Select a preset or enter custom angles below</span>
 
-            <label for="beamAngleH">Horizontal Beam Angle (degrees)</label>
-            <input type="number" id="beamAngleH" min="1" max="180" step="1" placeholder="e.g. 15">
-
             <label for="beamAngleV">Vertical Beam Angle (degrees)</label>
             <input type="number" id="beamAngleV" min="1" max="180" step="1" placeholder="e.g. 15">
+
+            <label for="beamAngleH">Horizontal Beam Angle (degrees)</label>
+            <input type="number" id="beamAngleH" min="1" max="180" step="1" placeholder="e.g. 15">
         </fieldset>
     </form>
 
     <!-- Output Section -->
     <div class="output" role="region" aria-live="polite" aria-label="Calculation results">
         <p>
-            <span class="output-label">Horizontal Beam Width:</span><br>
-            <span id="outputH" class="output-value output-placeholder">Enter values to calculate</span>
-        </p>
-        <p>
             <span class="output-label">Vertical Beam Width:</span><br>
             <span id="outputV" class="output-value output-placeholder">Enter values to calculate</span>
+        </p>
+        <p>
+            <span class="output-label">Horizontal Beam Width:</span><br>
+            <span id="outputH" class="output-value output-placeholder">Enter values to calculate</span>
         </p>
         <p id="errorMessage" class="error-message" role="alert"></p>
     </div>
@@ -506,9 +506,9 @@
         // Preset angles handler
         presetAngles.addEventListener("change", () => {
             if (presetAngles.value) {
-                let [h, v] = presetAngles.value.split(",");
-                beamAngleHInput.value = h;
+                let [v, h] = presetAngles.value.split(",");
                 beamAngleVInput.value = v;
+                beamAngleHInput.value = h;
             }
             calculateBeamWidth();
         });
