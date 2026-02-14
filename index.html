@@ -8,12 +8,17 @@
         /* Banner Brand Colors */
         :root {
             --banner-yellow: #FFD600;
+            --banner-yellow-light: #FFF8E1;
             --banner-black: #000000;
             --banner-dark-gray: #4A4A4A;
             --banner-medium-gray: #818091;
             --banner-light-gray: #D4D7E0;
             --banner-off-white: #F2F2F2;
             --banner-white: #FFFFFF;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666;
+            --border-color: #ddd;
+            --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             --error-red: #D32F2F;
         }
 
@@ -51,30 +56,38 @@
         }
 
         legend {
-            font-weight: 600;
-            color: var(--banner-dark-gray);
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--text-primary);
             margin-bottom: 8px;
+            margin-top: 16px;
             padding: 0;
         }
 
         label {
             display: block;
             margin-top: 12px;
-            font-weight: 400;
-            color: var(--banner-dark-gray);
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
         }
 
         select, input[type="number"] {
             display: block;
             margin-top: 4px;
             padding: 10px 12px;
-            border: 1px solid var(--banner-light-gray);
-            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
             font-family: inherit;
             font-size: 16px;
             width: 100%;
             box-sizing: border-box;
+            min-height: 44px;
             transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        input[type="number"] {
+            max-width: 200px;
         }
 
         select:focus, input[type="number"]:focus {
@@ -95,19 +108,14 @@
             border-color: var(--error-red);
         }
 
-        .input-hint {
-            font-size: 12px;
-            color: var(--banner-medium-gray);
-            margin-top: 2px;
-        }
-
         /* Output section */
         .output {
             margin-top: 24px;
-            padding: 16px;
-            background-color: var(--banner-off-white);
+            padding: 20px;
+            background-color: var(--banner-yellow-light);
             border-radius: 8px;
             border-left: 4px solid var(--banner-yellow);
+            box-shadow: var(--card-shadow);
         }
 
         .output p {
@@ -115,14 +123,29 @@
             font-weight: 400;
         }
 
+        .sensor-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin: 0 0 12px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sensor-name.hidden {
+            display: none;
+        }
+
         .output-label {
-            color: var(--banner-dark-gray);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
         }
 
         .output-value {
             font-weight: 700;
-            color: var(--banner-black);
-            font-size: 1.1em;
+            color: var(--text-primary);
+            font-size: 20px;
         }
 
         .output-value.error {
@@ -135,6 +158,7 @@
             color: var(--banner-medium-gray);
             font-style: italic;
             font-weight: 400;
+            font-size: 14px;
         }
 
         /* Disclaimer footer */
@@ -157,84 +181,58 @@
             color: var(--banner-dark-gray);
         }
 
-        /* Toggle switch - improved for accessibility and brand */
-        .toggle-container {
+        /* Segmented control for unit system */
+        .segmented-control {
             display: flex;
-            align-items: center;
-            gap: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
             margin-top: 16px;
-            padding: 12px 0;
+            max-width: 280px;
         }
 
-        .toggle-label {
-            font-weight: 400;
-            color: var(--banner-dark-gray);
-            min-width: 60px;
-        }
-
-        .toggle-label.active {
-            font-weight: 600;
-            color: var(--banner-black);
-        }
-
-        .toggle-switch {
-            position: relative;
-            width: 56px;
-            height: 30px;
-            flex-shrink: 0;
-        }
-
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .toggle-switch input:focus + .slider {
-            box-shadow: 0 0 0 3px rgba(255, 214, 0, 0.4);
-        }
-
-        .slider {
-            position: absolute;
+        .segmented-control button {
+            flex: 1;
+            padding: 10px 16px;
+            border: none;
+            background: var(--banner-white);
+            color: var(--text-secondary);
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 500;
             cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: var(--banner-medium-gray);
-            border-radius: 30px;
-            transition: background-color 0.3s, box-shadow 0.2s;
+            transition: background-color 0.15s, color 0.15s;
+            min-height: 44px;
         }
 
-        .slider:before {
-            content: "";
-            position: absolute;
-            height: 22px;
-            width: 22px;
-            left: 4px;
-            bottom: 4px;
-            background-color: var(--banner-white);
-            border-radius: 50%;
-            transition: transform 0.3s;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        .segmented-control button:not(:last-child) {
+            border-right: 1px solid var(--border-color);
         }
 
-        input:checked + .slider {
+        .segmented-control button.active {
             background-color: var(--banner-yellow);
+            color: var(--text-primary);
+            font-weight: 600;
         }
 
-        input:checked + .slider:before {
-            transform: translateX(26px);
+        .segmented-control button:focus-visible {
+            outline: none;
+            box-shadow: inset 0 0 0 3px rgba(255, 214, 0, 0.4);
         }
 
         /* Distance inputs container */
         .distance-inputs {
             display: flex;
             gap: 12px;
+            max-width: 280px;
         }
 
         .distance-inputs > div {
             flex: 1;
+        }
+
+        .distance-inputs input[type="number"] {
+            max-width: none;
         }
 
         /* Error message styling */
@@ -281,20 +279,6 @@
             body {
                 padding: 16px;
             }
-
-            .toggle-switch {
-                width: 50px;
-                height: 28px;
-            }
-
-            .slider:before {
-                height: 20px;
-                width: 20px;
-            }
-
-            input:checked + .slider:before {
-                transform: translateX(22px);
-            }
         }
     </style>
 </head>
@@ -304,15 +288,10 @@
     <form id="calculatorForm" aria-label="Radar beam width calculator">
         <!-- Unit Toggle -->
         <fieldset>
-            <legend class="visually-hidden">Unit System</legend>
-            <div class="toggle-container" role="group" aria-label="Select unit system">
-                <span id="imperialLabel" class="toggle-label active">Imperial</span>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="unitToggle" aria-describedby="unitToggleDesc">
-                    <span class="slider" role="presentation"></span>
-                </label>
-                <span id="metricLabel" class="toggle-label">Metric</span>
-                <span id="unitToggleDesc" class="visually-hidden">Toggle between Imperial and Metric units</span>
+            <legend>Units</legend>
+            <div class="segmented-control" role="radiogroup" aria-label="Select unit system">
+                <button type="button" id="imperialBtn" class="active" role="radio" aria-checked="true">Imperial</button>
+                <button type="button" id="metricBtn" role="radio" aria-checked="false">Metric</button>
             </div>
         </fieldset>
 
@@ -324,21 +303,18 @@
                 <div class="distance-inputs">
                     <div>
                         <label for="feet">Feet</label>
-                        <input type="number" id="feet" min="0" step="1" aria-describedby="feetHint" placeholder="e.g. 10">
-                        <span id="feetHint" class="input-hint">Whole feet</span>
+                        <input type="number" id="feet" min="0" step="1" placeholder="e.g. 10">
                     </div>
                     <div>
                         <label for="inches">Inches</label>
-                        <input type="number" id="inches" min="0" max="11" step="1" aria-describedby="inchesHint" placeholder="e.g. 6">
-                        <span id="inchesHint" class="input-hint">0-11 inches</span>
+                        <input type="number" id="inches" min="0" max="11" step="1" placeholder="0-11">
                     </div>
                 </div>
             </div>
 
             <div id="metricInputs" style="display: none;">
                 <label for="meters">Meters</label>
-                <input type="number" id="meters" step="0.01" min="0" aria-describedby="metersHint" placeholder="e.g. 3.05">
-                <span id="metersHint" class="input-hint">Distance in meters</span>
+                <input type="number" id="meters" step="0.01" min="0" placeholder="e.g. 3.05">
             </div>
         </fieldset>
 
@@ -346,21 +322,20 @@
         <fieldset>
             <legend>Beam Angles</legend>
 
-            <label for="presetAngles">Preset Configurations</label>
-            <select id="presetAngles" aria-describedby="presetHint">
+            <label for="presetAngles">Sensor Model</label>
+            <select id="presetAngles">
                 <option value="">Custom</option>
                 <option value="15,15" selected>T30R - 15° x 15°</option>
                 <option value="40,30">K50R - 40° x 30°</option>
                 <option value="40,40">Q90R - 40° x 40°</option>
                 <option value="40,120">Q90R2 - 40° x 120°</option>
             </select>
-            <span id="presetHint" class="input-hint">Select a preset or choose custom</span>
 
             <div id="customAngles" class="custom-angles">
-                <label for="beamAngleV">Vertical Beam Angle (degrees)</label>
+                <label for="beamAngleV">Vertical Beam Angle (°)</label>
                 <input type="number" id="beamAngleV" min="1" max="180" step="1" placeholder="e.g. 15">
 
-                <label for="beamAngleH">Horizontal Beam Angle (degrees)</label>
+                <label for="beamAngleH">Horizontal Beam Angle (°)</label>
                 <input type="number" id="beamAngleH" min="1" max="180" step="1" placeholder="e.g. 15">
             </div>
         </fieldset>
@@ -368,13 +343,14 @@
 
     <!-- Output Section -->
     <div class="output" role="region" aria-live="polite" aria-label="Calculation results">
+        <p id="sensorName" class="sensor-name">Sensor: T30R</p>
         <p>
             <span class="output-label">Vertical Beam Width:</span><br>
-            <span id="outputV" class="output-value output-placeholder">Enter values to calculate</span>
+            <span id="outputV" class="output-value output-placeholder">Enter distance to calculate</span>
         </p>
         <p>
             <span class="output-label">Horizontal Beam Width:</span><br>
-            <span id="outputH" class="output-value output-placeholder">Enter values to calculate</span>
+            <span id="outputH" class="output-value output-placeholder">Enter distance to calculate</span>
         </p>
         <p id="errorMessage" class="error-message" role="alert"></p>
     </div>
@@ -386,7 +362,8 @@
 
     <script>
         // DOM Elements
-        const unitToggle = document.getElementById("unitToggle");
+        const imperialBtn = document.getElementById("imperialBtn");
+        const metricBtn = document.getElementById("metricBtn");
         const feetInput = document.getElementById("feet");
         const inchesInput = document.getElementById("inches");
         const metersInput = document.getElementById("meters");
@@ -396,10 +373,10 @@
         const outputH = document.getElementById("outputH");
         const outputV = document.getElementById("outputV");
         const errorMessage = document.getElementById("errorMessage");
-        const imperialLabel = document.getElementById("imperialLabel");
-        const metricLabel = document.getElementById("metricLabel");
+        const sensorName = document.getElementById("sensorName");
 
         let debounceTimer;
+        let isMetric = false;
 
         // Conversion functions with bug fix for rounding
         function convertToMeters(feet, inches) {
@@ -446,7 +423,7 @@
                 let distance;
 
                 // Parse distance based on unit system
-                if (!unitToggle.checked) {
+                if (!isMetric) {
                     // Imperial
                     let feet = parseFloat(feetInput.value) || 0;
                     let inches = parseFloat(inchesInput.value) || 0;
@@ -464,15 +441,15 @@
                 clearError();
 
                 // Check if inputs are empty or show placeholder
-                const hasDistance = unitToggle.checked
+                const hasDistance = isMetric
                     ? (metersInput.value !== "" && parseFloat(metersInput.value) > 0)
                     : ((feetInput.value !== "" && parseFloat(feetInput.value) > 0) ||
                        (inchesInput.value !== "" && parseFloat(inchesInput.value) > 0));
                 const hasAngles = beamAngleVInput.value !== "" && beamAngleHInput.value !== "";
 
                 if (!hasDistance && !hasAngles) {
-                    outputH.textContent = "Enter values to calculate";
-                    outputV.textContent = "Enter values to calculate";
+                    outputH.textContent = "Enter distance to calculate";
+                    outputV.textContent = "Enter distance to calculate";
                     outputH.classList.add('output-placeholder');
                     outputV.classList.add('output-placeholder');
                     return;
@@ -510,7 +487,7 @@
                 }
 
                 // Format and display results
-                if (!unitToggle.checked) {
+                if (!isMetric) {
                     // Imperial output
                     widthH = widthH / 0.0254;
                     widthV = widthV / 0.0254;
@@ -524,53 +501,60 @@
             }, 300);
         }
 
-        // Update toggle label styling
-        function updateToggleLabels() {
-            if (unitToggle.checked) {
-                imperialLabel.classList.remove('active');
-                metricLabel.classList.add('active');
-            } else {
-                imperialLabel.classList.add('active');
-                metricLabel.classList.remove('active');
-            }
-        }
+        // Unit switch handler
+        function switchUnit(toMetric) {
+            if (toMetric === isMetric) return;
 
-        // Unit toggle handler with conversion
-        unitToggle.addEventListener("change", () => {
-            if (unitToggle.checked) {
-                // Imperial → Metric
+            if (toMetric) {
                 let feet = parseFloat(feetInput.value) || 0;
                 let inches = parseFloat(inchesInput.value) || 0;
                 metersInput.value = convertToMeters(feet, inches);
             } else {
-                // Metric → Imperial
                 let meters = parseFloat(metersInput.value) || 0;
                 let { feet, inches } = convertToFeetInches(meters);
                 feetInput.value = feet;
                 inchesInput.value = inches;
             }
 
-            document.getElementById("imperialInputs").style.display = unitToggle.checked ? "none" : "block";
-            document.getElementById("metricInputs").style.display = unitToggle.checked ? "block" : "none";
+            isMetric = toMetric;
+            imperialBtn.classList.toggle('active', !isMetric);
+            imperialBtn.setAttribute('aria-checked', !isMetric);
+            metricBtn.classList.toggle('active', isMetric);
+            metricBtn.setAttribute('aria-checked', isMetric);
+            document.getElementById("imperialInputs").style.display = isMetric ? "none" : "block";
+            document.getElementById("metricInputs").style.display = isMetric ? "block" : "none";
 
-            updateToggleLabels();
             calculateBeamWidth();
-        });
+        }
+
+        imperialBtn.addEventListener("click", () => switchUnit(false));
+        metricBtn.addEventListener("click", () => switchUnit(true));
+
+        // Update sensor name display in results card
+        function updateSensorName() {
+            const selected = presetAngles.options[presetAngles.selectedIndex];
+            if (presetAngles.value && selected) {
+                const name = selected.text.split(" - ")[0];
+                sensorName.textContent = "Sensor: " + name;
+                sensorName.classList.remove("hidden");
+            } else {
+                sensorName.classList.add("hidden");
+            }
+        }
 
         // Preset angles handler
         presetAngles.addEventListener("change", () => {
             const customAnglesDiv = document.getElementById("customAngles");
 
             if (presetAngles.value) {
-                // Preset selected - hide custom inputs and populate values
                 customAnglesDiv.classList.remove("visible");
                 let [v, h] = presetAngles.value.split(",");
                 beamAngleVInput.value = v;
                 beamAngleHInput.value = h;
             } else {
-                // Custom selected - show custom inputs
                 customAnglesDiv.classList.add("visible");
             }
+            updateSensorName();
             calculateBeamWidth();
         });
 
@@ -579,6 +563,7 @@
             const customAnglesDiv = document.getElementById("customAngles");
             presetAngles.value = "";
             customAnglesDiv.classList.add("visible");
+            updateSensorName();
         }
 
         // Input event listeners
@@ -593,9 +578,6 @@
             resetPresetToCustom();
             calculateBeamWidth();
         });
-
-        // Initialize toggle labels
-        updateToggleLabels();
 
         // Initialize with default preset values
         if (presetAngles.value) {
