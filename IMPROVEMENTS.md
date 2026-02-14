@@ -8,94 +8,16 @@ This document defines all planned improvements for the Radar Beam Width Calculat
 
 ---
 
-## Phase 1: Visual Polish
+## ~~Phase 1: Visual Polish~~ ✅ Completed 2026-02-14
 
-These changes modernize the look and feel without altering functionality. Implement all items in this phase together as a single pass.
+All items in this phase have been implemented.
 
-### 1.1 Unit System Toggle → Segmented Control
-
-**Current:** Toggle switch with "Imperial" / "Metric" labels, a "Unit System" section header above, and helper text reading "Toggle between Imperial and Metric units." Takes up excessive vertical space.
-
-**Requirements:**
-* Replace the toggle switch, labels, and helper text with a segmented control (two side-by-side buttons): Imperial | Metric
-* Active segment: Banner yellow (#FFC107) background, dark text (#1a1a1a)
-* Inactive segment: light gray or white background, muted text (#666)
-* Remove the "Unit System" section header — the control is self-explanatory
-* Remove the "Toggle between Imperial and Metric units" helper text
-* Place near the top of the form, full-width or ~80% width, centered
-* Rounded corners, subtle border — should look like a cohesive pill/tab bar
-* CSS transition on active state (~150ms)
-
-**Behavior (unchanged):**
-* Tapping a segment switches units immediately
-* Imperial → Feet + Inches inputs; Metric → single Meters input
-* Results display updates to match selected unit system
-
-### 1.2 Visual Hierarchy — Section Headers & Input Labels
-
-**Current:** Section headers ("Distance," "Beam Angles") and input labels ("Meters," "Vertical Beam Angle (degrees)") use similar font weights and sizes, flattening the visual hierarchy.
-
-**Section Headers (e.g., "Distance," "Beam Angles"):**
-* Font size: 18px / 1.125rem
-* Font weight: 700 (bold)
-* Color: #1a1a1a
-* 16px top margin above each section for visual separation
-* Optionally add a subtle top border or extra whitespace between sections
-
-**Input Labels (e.g., "Meters," "Vertical Beam Angle (°)"):**
-* Font size: 14px / 0.875rem
-* Font weight: 500 (medium)
-* Color: #555 or #666
-* Sit directly above their input field with 4px gap
-
-**Also:**
-* Rename "Preset Configurations" label to "Sensor Model"
-* Update custom angle labels to use degree symbol: "Vertical Beam Angle (°)" and "Horizontal Beam Angle (°)"
-* No all-caps anywhere
-
-### 1.3 Remove Helper Text Under Inputs
-
-**Current:** Helper text appears below inputs: "Distance in meters," "Whole feet," "0-11 inches," "Select a preset or choose custom."
-
-**Requirements:**
-* Remove all helper text below input fields
-* Labels (per 1.2) should be descriptive enough on their own
-* Use placeholder text inside inputs if needed for affordance (e.g., faint 0 or 0.0)
-
-### 1.4 Tighten Input Fields
-
-**Current:** Input fields span nearly full container width. Oversized for 1–4 digit numeric values.
-
-**Requirements:**
-* Single numeric inputs (distance in meters, beam angles): max-width 200px
-* Imperial feet + inches fields (side by side): ~120px each
-* Inputs left-align within their section (not centered on page)
-* Sensor Model dropdown remains wider (up to 100% of content area) since it shows model names
-* Minimum touch target: 44px height on all inputs
-* Consistent input styling: 1px border (#ddd), 8px border-radius, 12px horizontal padding
-
-### 1.5 Results Card — Increased Contrast
-
-**Current:** Light gray background with yellow left border. Blends into the page.
-
-**Requirements:**
-* Background: white (#fff) or very subtle yellow tint (#FFFDE7 or #FFF8E1)
-* Box shadow: 0 2px 8px rgba(0,0,0,0.1)
-* Left border: keep Banner yellow, increase to 4px width
-* Border radius: 8px
-* Internal padding: 20px
-* Top margin: 24px separation from inputs above
-* Result values (e.g., "4.368 m"): bold, 20px, color #1a1a1a
-* Result labels (e.g., "Vertical Beam Width:"): 14px, medium weight, color #666
-* When a preset sensor is selected, show the sensor model name in the results card (e.g., "Sensor: T30R" at the top of the card). Hide this line when Custom is selected.
-
-### 1.6 Better Empty State
-
-**Current:** Generic placeholder when no valid inputs are entered.
-
-**Requirements:**
-* Replace with specific guidance: "Enter distance and select a sensor model" or similar context-appropriate messaging
-* Could show different messages based on what's missing (optional, keep simple)
+### ✅ 1.1 Unit System Toggle → Segmented Control
+### ✅ 1.2 Visual Hierarchy — Section Headers & Input Labels
+### ✅ 1.3 Remove Helper Text Under Inputs
+### ✅ 1.4 Tighten Input Fields
+### ✅ 1.5 Results Card — Increased Contrast
+### ✅ 1.6 Better Empty State
 
 ---
 
@@ -295,6 +217,11 @@ Add Enter key support or visual feedback. May not be necessary given auto-calcul
 ---
 
 ## Completed
+
+### ✅ Phase 1: Visual Polish
+**Completed:** 2026-02-14
+
+Segmented control for unit toggle, improved visual hierarchy (section headers vs. input labels), removed helper text, tightened input field widths, restyled results card with shadow and sensor name display, improved empty state messaging.
 
 ### ✅ Collapsible Custom Angle Inputs
 **Completed:** 2025-01-24
