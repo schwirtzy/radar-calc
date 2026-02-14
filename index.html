@@ -137,6 +137,26 @@
             font-weight: 400;
         }
 
+        /* Disclaimer footer */
+        .disclaimer {
+            margin-top: 32px;
+            padding-top: 16px;
+            border-top: 1px solid var(--banner-light-gray);
+            font-size: 12px;
+            color: var(--banner-medium-gray);
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .disclaimer a {
+            color: var(--banner-medium-gray);
+            text-decoration: underline;
+        }
+
+        .disclaimer a:hover {
+            color: var(--banner-dark-gray);
+        }
+
         /* Toggle switch - improved for accessibility and brand */
         .toggle-container {
             display: flex;
@@ -357,6 +377,11 @@
             <span id="outputH" class="output-value output-placeholder">Enter values to calculate</span>
         </p>
         <p id="errorMessage" class="error-message" role="alert"></p>
+    </div>
+
+    <!-- Disclaimer Footer -->
+    <div class="disclaimer">
+        <p><strong>Note:</strong> These calculations provide mounting estimates based on ideal beam geometry. Actual beam patterns vary with target characteristics. Consult your sensor's instruction manual at <a href="https://bannerengineering.com" target="_blank" rel="noopener noreferrer">bannerengineering.com</a> for detailed beam pattern charts and specifications.</p>
     </div>
 
     <script>
